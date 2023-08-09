@@ -7,7 +7,7 @@ object APiUtilities {
 
     val BASE_URL= "https://herosapp.nyc3.digitaloceanspaces.com/"
 
-    public fun createRetrofitInstance(): Retrofit {
+    fun createRetrofitInstance(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
