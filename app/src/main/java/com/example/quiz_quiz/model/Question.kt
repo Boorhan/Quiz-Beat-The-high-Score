@@ -8,8 +8,8 @@ data class Question(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0, // Auto-generated primary key
     val answers: Answers,
-    val correctAnswer: String,
-    val question: String,
-    val questionImageUrl: String,
+    val correctAnswer: String?,
+    val question: String?,
+    val questionImageUrl: String?, // Allow nullable value here
     val score: Int
 )

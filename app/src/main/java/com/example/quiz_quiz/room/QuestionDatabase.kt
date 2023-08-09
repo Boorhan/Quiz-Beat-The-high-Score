@@ -9,7 +9,7 @@ import com.example.quiz_quiz.TypeConverter.AnswersTypeConverter
 import com.example.quiz_quiz.model.Answers
 import com.example.quiz_quiz.model.Question
 
-@Database(entities = [Question::class, Answers::class], version = 2)
+@Database(entities = [Question::class, Answers::class], version = 4)
 @TypeConverters(AnswersTypeConverter::class)
 abstract class QuestionDatabase : RoomDatabase(){
 
