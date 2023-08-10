@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.quiz_quiz.api.APIinterface
 import com.example.quiz_quiz.api.APiUtilities
@@ -36,6 +37,7 @@ class MainActivity : AppCompatActivity() {
 
         questionViewModel.question.observe(this, {
             Log.d("Borhan", "onCreate: ${it.toString()}")
+            Toast.makeText(this, "Size: ${it.questions.size}", Toast.LENGTH_LONG).show()
 
             it.questions.iterator().forEach {q->
                 Log.d("Borhan", "Question: ${q.answers}\n Score: ${q.score}")

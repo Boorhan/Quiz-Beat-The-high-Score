@@ -6,5 +6,18 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="colorPrimary">#034272</color>
+    <color name="colorPrimaryDark">#0E2F92</color>
+    <color name="colorAccent">#1E1F2A</color>
+
+    <color name="green">#4CAF50</color>
+    <color name="red">#F44336</color>
+
+    <color name="white">#FFFFFF</color>
+
+    <color name="color1">#1193D0</color>
+    <color name="color2">#0BA9BD</color>
+    <color name="nearBlue">#1B0340</color>
+
+    <color name="buttonBG">#FF9800</color>
 </resources>

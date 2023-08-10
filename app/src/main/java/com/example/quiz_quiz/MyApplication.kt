@@ -16,6 +16,6 @@ class MyApplication:Application() {
         val questionApi= APiUtilities.createRetrofitInstance().create(APIinterface::class.java);
 
         val database = QuestionDatabase.getDatabase(applicationContext)
-        questionsRepository= QuestionsRepository(questionApi, database)
+        questionsRepository= QuestionsRepository(questionApi, database, applicationContext)
     }
 }
