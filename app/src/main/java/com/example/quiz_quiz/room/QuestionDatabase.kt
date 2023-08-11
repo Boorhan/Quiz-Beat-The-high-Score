@@ -7,9 +7,10 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.quiz_quiz.TypeConverter.AnswersTypeConverter
 import com.example.quiz_quiz.model.Answers
+import com.example.quiz_quiz.model.HighScore
 import com.example.quiz_quiz.model.Question
 
-@Database(entities = [Question::class, Answers::class], version = 4)
+@Database(entities = [Question::class, Answers::class, HighScore::class], version = 5)
 @TypeConverters(AnswersTypeConverter::class)
 abstract class QuestionDatabase : RoomDatabase(){
 

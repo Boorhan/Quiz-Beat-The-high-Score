@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.quiz_quiz.api.APIinterface
 import com.example.quiz_quiz.model.Answers
+import com.example.quiz_quiz.model.HighScore
 import com.example.quiz_quiz.model.QuestionsAndAnswers
 import com.example.quiz_quiz.room.QuestionDatabase
 import com.example.quiz_quiz.room.RoomDao
@@ -24,6 +25,13 @@ class QuestionsRepository(
     val question:LiveData<QuestionsAndAnswers>
     get() = questionsLiveData
 
+    suspend fun insertHighScore(highScore: HighScore) {
+        questionDatabase.questionDao().insertHighScore(highScore)
+    }
+
+    suspend fun getHighestScore(): HighScore? {
+        return questionDatabase.questionDao().getHighestScore()
+    }
 
     suspend fun fetchQuestions() {
 

@@ -2,8 +2,10 @@ package com.example.quiz_quiz.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.example.quiz_quiz.model.Answers
+import com.example.quiz_quiz.model.HighScore
 import com.example.quiz_quiz.model.Question
 import com.example.quiz_quiz.model.QuestionsAndAnswers
 import com.example.quiz_quiz.repository.QuestionsRepository
@@ -31,6 +33,16 @@ class QuestionsViewModel(private val repository: QuestionsRepository) : ViewMode
     fun populateAnswerList(answers: List<Answers>) {
         answerList.addAll(answers)
     }
+
+    suspend fun insertHighScore(highScore: HighScore) {
+        repository.insertHighScore(highScore)
+    }
+    fun getHighestScore(): LiveData<HighScore?> {
+        return liveData(Dispatchers.IO) {
+            emit(repository.getHighestScore())
+        }
+    }
+
     fun getCustomAnswerList(): List<Answers> {
         return answerList
     }

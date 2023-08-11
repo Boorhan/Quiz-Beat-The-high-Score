@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.quiz_quiz.model.Answers
+import com.example.quiz_quiz.model.HighScore
 import com.example.quiz_quiz.model.Question
 
 @Dao
@@ -27,4 +28,10 @@ interface RoomDao {
 
     @Query("SELECT * FROM answers")
     suspend fun getAnswers(): List<Answers>
+
+    @Insert
+    suspend fun insertHighScore(highScore: HighScore)
+
+    @Query("SELECT * FROM high_score_table ORDER BY score DESC LIMIT 1")
+    suspend fun getHighestScore(): HighScore?
 }

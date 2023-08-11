@@ -14,10 +14,15 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.quiz_quiz.viewmodel.QuestionViewModelFactory
 import com.example.quiz_quiz.viewmodel.QuestionsViewModel
 import android.widget.TextView
+import androidx.lifecycle.Observer
 import com.example.quiz_quiz.model.Answers
+import com.example.quiz_quiz.model.HighScore
 import com.example.quiz_quiz.model.Question
 import com.google.android.material.button.MaterialButton
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class QuizActivity : AppCompatActivity() {
@@ -53,10 +58,12 @@ class QuizActivity : AppCompatActivity() {
     //Variables
     private var currentQuestionIndex = 0
     private var scoreCount = 0
+    private var totalScoreCount = 0
     private var correctScoreCount = 0
     private var wrongScoreCount = 0
     private var curCorrectAns = ""
     private var imgURL = ""
+    private var highScoreCount = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,7 +72,7 @@ class QuizActivity : AppCompatActivity() {
         initializeViews()
         initializeDatabse()
         buttonClickListener()
-
+        getHighScoreFromDatabase()
         shakeAnimation = AnimationUtils.loadAnimation(this, R.anim.shake)
         countDownTimer = object : CountDownTimer(10000L, COUNTDOWN_INTERVAL) {
             override fun onTick(millisUntilFinished: Long) {
@@ -106,6 +113,16 @@ class QuizActivity : AppCompatActivity() {
 
     }
 
+    private fun getHighScoreFromDatabase(){
+        questionViewModel.getHighestScore().observe(this, Observer { highestScore ->
+            // Update UI with highestScore
+            if (highestScore != null) {
+                highScoreCount= highestScore.score!!
+                //appTitleTextView!!.text=highScoreCount.toString()
+            }
+        })
+    }
+
     private fun initializeDatabse(){
         var repository= (application as MyApplication).questionsRepository
 
@@ -115,6 +132,7 @@ class QuizActivity : AppCompatActivity() {
         questionViewModel.question.observe(this, {
             //Log.d("Borhan", "onCreate: ${it.toString()}")
             //Toast.makeText(this, "Size: ${it.questions.size}", Toast.LENGTH_LONG).show()
+
 
             val quesList =it.questions
             Log.d("ScoobyDooby", "onCreate: ${it.questions}")
@@ -149,11 +167,20 @@ class QuizActivity : AppCompatActivity() {
             val item=customQuestionsList[currentQuestionIndex]
             //from variables
             tvCurQuesNo!!.text = (currentQuestionIndex+1).toString()
-            scoreCountText!!.text =scoreCount.toString()
+            scoreCountText!!.text =totalScoreCount.toString()
+            if(totalScoreCount>=highScoreCount){
+                CoroutineScope(Dispatchers.Main).launch {
+                    highScoreCount= totalScoreCount.toLong()
+                    val highScore = HighScore(score = highScoreCount)
+                    questionViewModel.insertHighScore(highScore)// This function should also be suspend
+                }
+            }
+
             correctTextView!!.text = correctScoreCount.toString()
             wrongTextView!!.text= wrongScoreCount.toString()
             //from customQuestionsList
-            scoreTextView!!.text=item.score.toString()
+            scoreCount=item.score
+            scoreTextView!!.text=scoreCount.toString()+" Points"
             questionTextView!!.text = item.question.toString()
             totalQuestionTextView!!.text = customQuestionsList.size.toString()
 
@@ -275,11 +302,17 @@ class QuizActivity : AppCompatActivity() {
                 R.id.buttonA -> {
                     buttonA!!.setStrokeColorResource(R.color.lightGreen)
 
-                    Toast.makeText(this, "CorrectAns: ${curCorrectAns}", Toast.LENGTH_SHORT).show()
+                   // Toast.makeText(this, "CorrectAns: ${curCorrectAns}", Toast.LENGTH_SHORT).show()
 
                     if(curCorrectAns=="A"){
-                        Log.d("ScoobyDooby", "Yes: Correct $curCorrectAns")
+
+                        totalScoreCount+=scoreCount
+                        scoreCountText!!.text=totalScoreCount.toString()
+                        correctScoreCount+=1
+                        correctTextView!!.text=correctScoreCount.toString()
                     }else{
+                        wrongScoreCount+=1
+                        wrongTextView!!.text=wrongScoreCount.toString()
                         Log.d("ScoobyDooby", "No: Wrong")
                     }
 
@@ -292,8 +325,13 @@ class QuizActivity : AppCompatActivity() {
                 R.id.buttonB -> {
 
                     if(curCorrectAns=="B"){
-                        Log.d("ScoobyDooby", "Yes: Correct $curCorrectAns")
+                        totalScoreCount+=scoreCount
+                        scoreCountText!!.text=totalScoreCount.toString()
+                        correctScoreCount+=1
+                        correctTextView!!.text=correctScoreCount.toString()
                     }else{
+                        wrongScoreCount+=1
+                        wrongTextView!!.text=wrongScoreCount.toString()
                         Log.d("ScoobyDooby", "No: Wrong")
                     }
 
@@ -306,8 +344,13 @@ class QuizActivity : AppCompatActivity() {
 
 
                     if(curCorrectAns=="C"){
-                        Log.d("ScoobyDooby", "Yes: Correct $curCorrectAns")
+                        totalScoreCount+=scoreCount
+                        scoreCountText!!.text=totalScoreCount.toString()
+                        correctScoreCount+=1
+                        correctTextView!!.text=correctScoreCount.toString()
                     }else{
+                        wrongScoreCount+=1
+                        wrongTextView!!.text=wrongScoreCount.toString()
                         Log.d("ScoobyDooby", "No: Wrong")
                     }
                     changeStrokeColor(curCorrectAns,"C")
@@ -318,8 +361,13 @@ class QuizActivity : AppCompatActivity() {
                 R.id.buttonD -> {
 
                     if(curCorrectAns=="D"){
-                        Log.d("ScoobyDooby", "Yes: Correct $curCorrectAns")
+                        totalScoreCount+=scoreCount
+                        scoreCountText!!.text=totalScoreCount.toString()
+                        correctScoreCount+=1
+                        correctTextView!!.text=correctScoreCount.toString()
                     }else{
+                        wrongScoreCount+=1
+                        wrongTextView!!.text=wrongScoreCount.toString()
                         Log.d("ScoobyDooby", "No: Wrong")
                     }
                     changeStrokeColor(curCorrectAns,"D")
