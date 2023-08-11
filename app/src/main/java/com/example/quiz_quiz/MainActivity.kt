@@ -58,14 +58,13 @@ class MainActivity : AppCompatActivity() {
             // Update UI with highestScore
             if (highestScore != null) {
                 highScore= highestScore.score!!
-                highScoreTextView!!.text=highScore.toString()
+                highScoreTextView!!.text=highScore.toString()+" Point"
             }
         })
     }
 
     fun startNewGame(view: View) {
 
-        // Code to start a new game goes here
         val intent = Intent(this, QuizActivity::class.java)
         startActivity(intent)
         finish()
