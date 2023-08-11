@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
 
         questionViewModel.question.observe(this, {
             Log.d("Borhan", "onCreate: ${it.toString()}")
-            Toast.makeText(this, "Size: ${it.questions.size}", Toast.LENGTH_LONG).show()
+            //Toast.makeText(this, "Size: ${it.questions.size}", Toast.LENGTH_LONG).show()
 
             it.questions.iterator().forEach {q->
                 Log.d("Borhan", "Question: ${q.answers}\n Score: ${q.score}")

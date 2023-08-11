@@ -152,7 +152,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout">
 
 
         <ImageView
@@ -218,6 +219,7 @@
                         android:textColor="@color/nearBlue"
                         android:textSize="22sp"
                         android:textStyle="bold"
+
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"/>
@@ -228,6 +230,7 @@
                         android:layout_width="250dp"
                         android:layout_height="200dp"
                         android:src="@drawable/quiz_logo"
+
                         app:layout_constraintTop_toBottomOf="@+id/scoreTextView"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -267,56 +270,60 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintVertical_bias="0.060000002">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonA"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:background="@color/buttonBG"
-                android:onClick="buttonA"
                 android:text="Design"
+                app:strokeColor="@color/white"
+                app:strokeWidth="4dp"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="22sp"
+                android:textSize="25sp"
+                app:cornerRadius="15dp"
                 android:textStyle="bold" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonB"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:background="@color/buttonBG"
-                android:onClick="buttonB"
                 android:text="Operating System"
+                app:strokeColor="@color/white"
+                app:strokeWidth="3dp"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="22sp"
+                android:textSize="25sp"
+                app:cornerRadius="15dp"
                 android:textStyle="bold" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonC"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:strokeColor="@color/white"
+                app:strokeWidth="3dp"
                 android:layout_marginTop="15dp"
-                android:background="@color/buttonBG"
-                android:onClick="buttonC"
                 android:text="Smart Phone"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="22sp"
+                android:textSize="25sp"
+                app:cornerRadius="15dp"
                 android:textStyle="bold" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonD"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:background="@color/buttonBG"
-                android:onClick="buttonD"
+                app:strokeColor="@color/white"
+                app:strokeWidth="3dp"
                 android:text="Quizi Quizi"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="22sp"
+                android:textSize="25sp"
+                app:cornerRadius="15dp"
                 android:textStyle="bold" />
 
         </LinearLayout>

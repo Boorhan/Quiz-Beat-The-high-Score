@@ -11,6 +11,8 @@
     <color name="colorAccent">#1E1F2A</color>
 
     <color name="green">#4CAF50</color>
+    <color name="lightGreen">#3BF134</color>
+    <color name="lightRed">#D3453B</color>
     <color name="red">#F44336</color>
 
     <color name="white">#FFFFFF</color>

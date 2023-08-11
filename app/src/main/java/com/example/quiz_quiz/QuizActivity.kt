@@ -1,10 +1,14 @@
 package com.example.quiz_quiz
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.lifecycle.ViewModelProvider
 import com.example.quiz_quiz.viewmodel.QuestionViewModelFactory
@@ -12,6 +16,8 @@ import com.example.quiz_quiz.viewmodel.QuestionsViewModel
 import android.widget.TextView
 import com.example.quiz_quiz.model.Answers
 import com.example.quiz_quiz.model.Question
+import com.google.android.material.button.MaterialButton
+import com.squareup.picasso.Picasso
 
 
 class QuizActivity : AppCompatActivity() {
@@ -35,20 +41,22 @@ class QuizActivity : AppCompatActivity() {
     private var scoreTextView: TextView? = null
     private var questionImageView: ImageView? = null
     private var questionTextView: TextView? = null
-    private var buttonA: Button? = null
-    private var buttonB: Button? = null
-    private var buttonC: Button? = null
-    private var buttonD: Button? = null
+    private var buttonA: MaterialButton? = null
+    private var buttonB: MaterialButton? = null
+    private var buttonC: MaterialButton? = null
+    private var buttonD: MaterialButton? = null
 
     private var countDownTimer: CountDownTimer? = null
     private val COUNTDOWN_INTERVAL = 1000L // 1 second
+    private lateinit var shakeAnimation: Animation
 
-
-
+    //Variables
     private var currentQuestionIndex = 0
     private var scoreCount = 0
     private var correctScoreCount = 0
     private var wrongScoreCount = 0
+    private var curCorrectAns = ""
+    private var imgURL = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,8 +66,25 @@ class QuizActivity : AppCompatActivity() {
         initializeDatabse()
         buttonClickListener()
 
-    }
+        shakeAnimation = AnimationUtils.loadAnimation(this, R.anim.shake)
+        countDownTimer = object : CountDownTimer(10000L, COUNTDOWN_INTERVAL) {
+            override fun onTick(millisUntilFinished: Long) {
+                // Update countdown UI if needed
+                val secondsRemaining = (millisUntilFinished + 1000) / 1000 // Add 1000 milliseconds and then divide
 
+                timerTextView!!.text=secondsRemaining.toString()
+
+            }
+
+            override fun onFinish() {
+                // Move to the next question when timer finishes
+                currentQuestionIndex++
+                timerTextView!!.text="0"
+                updateUI()
+            }
+        }
+
+    }
 
     private fun initializeViews() {
         // Initialize the views using findViewById
@@ -123,7 +148,7 @@ class QuizActivity : AppCompatActivity() {
         if (customQuestionsList.isNotEmpty() && currentQuestionIndex < customQuestionsList.size) {
             val item=customQuestionsList[currentQuestionIndex]
             //from variables
-            tvCurQuesNo!!.text = currentQuestionIndex.toString()
+            tvCurQuesNo!!.text = (currentQuestionIndex+1).toString()
             scoreCountText!!.text =scoreCount.toString()
             correctTextView!!.text = correctScoreCount.toString()
             wrongTextView!!.text= wrongScoreCount.toString()
@@ -131,10 +156,38 @@ class QuizActivity : AppCompatActivity() {
             scoreTextView!!.text=item.score.toString()
             questionTextView!!.text = item.question.toString()
             totalQuestionTextView!!.text = customQuestionsList.size.toString()
+
+            resetButtonColor()
+            resetButtonVisibility()
+            clearButtonAnimation()
+            if(item.answers.A==null){
+                buttonA!!.visibility= View.GONE
+            }
+            if(item.answers.B==null){
+                buttonB!!.visibility= View.GONE
+            }
+
+            if(item.answers.C==null){
+                buttonC!!.visibility= View.GONE
+            }
+
+            if(item.answers.D==null){
+                buttonD!!.visibility= View.GONE
+            }
             buttonA!!.text=item.answers.A
             buttonB!!.text=item.answers.B
             buttonC!!.text=item.answers.C
             buttonD!!.text=item.answers.D
+
+            curCorrectAns=item.correctAnswer.toString()
+            imgURL=item.questionImageUrl.toString()
+            if(imgURL!="null"){
+                //Log.d("ScoobyDooby", "borhan is here")
+                Picasso.get().load(imgURL).into(questionImageView);
+            }else{
+                //Log.d("Quiz activity", "ImgURL is null ")
+                questionImageView!!.setImageResource(R.drawable.quiz_logo)
+            }
 
         }
         else {
@@ -145,40 +198,134 @@ class QuizActivity : AppCompatActivity() {
 
     }
 
+    private fun clearButtonAnimation(){
+        buttonA!!.clearAnimation()
+        buttonB!!.clearAnimation()
+        buttonC!!.clearAnimation()
+        buttonD!!.clearAnimation()
+    }
     private fun startCountdownTimer() {
-        countDownTimer = object : CountDownTimer(10000L, COUNTDOWN_INTERVAL) {
+        countDownTimer?.start()
+    }
+
+    private fun delay2sec(){
+
+        countDownTimer?.cancel()
+
+        object : CountDownTimer(2000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
-                // Update countdown UI if needed
-                val secondsRemaining = (millisUntilFinished + 1000) / 1000 // Add 1000 milliseconds and then divide
-
-                timerTextView!!.text=secondsRemaining.toString()
-
+                timerTextView!!.text= (millisUntilFinished/ 1000).toString()
             }
-
             override fun onFinish() {
-                // Move to the next question when timer finishes
-                currentQuestionIndex++
-                updateUI()
+                countDownTimer?.onFinish()
             }
+        }.start()
+    }
+
+    private fun resetButtonVisibility(){
+        buttonA!!.visibility=View.VISIBLE
+        buttonB!!.visibility=View.VISIBLE
+        buttonC!!.visibility=View.VISIBLE
+        buttonD!!.visibility=View.VISIBLE
+    }
+    private fun resetButtonColor(){
+        buttonA!!.setStrokeColorResource(R.color.white)
+        buttonA!!.isEnabled=true
+        buttonB!!.setStrokeColorResource(R.color.white)
+        buttonB!!.isEnabled=true
+        buttonC!!.setStrokeColorResource(R.color.white)
+        buttonC!!.isEnabled=true
+        buttonD!!.setStrokeColorResource(R.color.white)
+        buttonD!!.isEnabled=true
+    }
+
+    private fun buttonClickedFalse(){
+        buttonA!!.isEnabled=false
+        buttonB!!.isEnabled=false
+        buttonC!!.isEnabled=false
+        buttonD!!.isEnabled=false
+    }
+
+    private fun changeStrokeColor(ans:String, buttonClicked: String){
+
+        if(ans=="A"){
+            buttonA!!.setStrokeColorResource(R.color.lightGreen)
+        }else if(ans=="B"){
+            buttonB!!.setStrokeColorResource(R.color.lightGreen)
+        }else if(ans=="C"){
+            buttonC!!.setStrokeColorResource(R.color.lightGreen)
+        }else if(ans=="D"){
+            buttonD!!.setStrokeColorResource(R.color.lightGreen)
         }
 
-        countDownTimer?.start()
+        if(buttonClicked=="A" && ans!="A"){
+            buttonA!!.setStrokeColorResource(R.color.lightRed)
+        }else if(buttonClicked=="B" && ans!="B"){
+            buttonB!!.setStrokeColorResource(R.color.lightRed)
+        }else if(buttonClicked=="C" && ans!="C"){
+            buttonC!!.setStrokeColorResource(R.color.lightRed)
+        }else if(buttonClicked=="D" && ans!="C"){
+            buttonD!!.setStrokeColorResource(R.color.lightRed)
+        }
     }
 
     private fun buttonClickListener(){
         val buttonClickListener = View.OnClickListener { view ->
             when (view.id) {
                 R.id.buttonA -> {
-                    // Handle button A click
+                    buttonA!!.setStrokeColorResource(R.color.lightGreen)
+
+                    Toast.makeText(this, "CorrectAns: ${curCorrectAns}", Toast.LENGTH_SHORT).show()
+
+                    if(curCorrectAns=="A"){
+                        Log.d("ScoobyDooby", "Yes: Correct $curCorrectAns")
+                    }else{
+                        Log.d("ScoobyDooby", "No: Wrong")
+                    }
+
+
+                    buttonA!!.startAnimation(shakeAnimation)
+                    changeStrokeColor(curCorrectAns,"A")
+                    buttonClickedFalse()
+                    delay2sec()
                 }
                 R.id.buttonB -> {
-                    // Handle button B click
+
+                    if(curCorrectAns=="B"){
+                        Log.d("ScoobyDooby", "Yes: Correct $curCorrectAns")
+                    }else{
+                        Log.d("ScoobyDooby", "No: Wrong")
+                    }
+
+                    changeStrokeColor(curCorrectAns,"B")
+                    buttonB!!.startAnimation(shakeAnimation)
+                    buttonClickedFalse()
+                    delay2sec()
                 }
                 R.id.buttonC -> {
-                    // Handle button A click
+
+
+                    if(curCorrectAns=="C"){
+                        Log.d("ScoobyDooby", "Yes: Correct $curCorrectAns")
+                    }else{
+                        Log.d("ScoobyDooby", "No: Wrong")
+                    }
+                    changeStrokeColor(curCorrectAns,"C")
+                    buttonC!!.startAnimation(shakeAnimation)
+                    buttonClickedFalse()
+                    delay2sec()
                 }
                 R.id.buttonD -> {
-                    // Handle button B click
+
+                    if(curCorrectAns=="D"){
+                        Log.d("ScoobyDooby", "Yes: Correct $curCorrectAns")
+                    }else{
+                        Log.d("ScoobyDooby", "No: Wrong")
+                    }
+                    changeStrokeColor(curCorrectAns,"D")
+                    buttonD!!.startAnimation(shakeAnimation)
+                    buttonClickedFalse()
+                    delay2sec()
                 }
 
             }
