@@ -68,6 +68,7 @@ class MainActivity : AppCompatActivity() {
         // Code to start a new game goes here
         val intent = Intent(this, QuizActivity::class.java)
         startActivity(intent)
+        finish()
     }
 
     private fun updateHighScore() {

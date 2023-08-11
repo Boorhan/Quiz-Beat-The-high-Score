@@ -1,8 +1,6 @@
 package com.example.quiz_quiz
 
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
@@ -10,14 +8,14 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.*
-import androidx.lifecycle.ViewModelProvider
-import com.example.quiz_quiz.viewmodel.QuestionViewModelFactory
-import com.example.quiz_quiz.viewmodel.QuestionsViewModel
-import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.quiz_quiz.model.Answers
 import com.example.quiz_quiz.model.HighScore
 import com.example.quiz_quiz.model.Question
+import com.example.quiz_quiz.viewmodel.QuestionViewModelFactory
+import com.example.quiz_quiz.viewmodel.QuestionsViewModel
 import com.google.android.material.button.MaterialButton
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
@@ -40,6 +38,8 @@ class QuizActivity : AppCompatActivity() {
     private var correctTextView: TextView? = null
     private var wrongTextView: TextView? = null
     private var correctArrowImageView: ImageView? = null
+    private var  buttonHome: MaterialButton? =null
+    private var  buttonHomeMain: RelativeLayout? =null
     private var wrongArrowImageView: ImageView? = null
     private var timerImageView: ImageView? = null
     private var timerTextView: TextView? = null
@@ -50,10 +50,12 @@ class QuizActivity : AppCompatActivity() {
     private var buttonB: MaterialButton? = null
     private var buttonC: MaterialButton? = null
     private var buttonD: MaterialButton? = null
+    private var progressBar: ProgressBar? = null
 
     private var countDownTimer: CountDownTimer? = null
     private val COUNTDOWN_INTERVAL = 1000L // 1 second
-    private lateinit var shakeAnimation: Animation
+    private lateinit var shakeAnimationWrong: Animation
+    private lateinit var shakeAnimationRight: Animation
 
     //Variables
     private var currentQuestionIndex = 0
@@ -64,6 +66,7 @@ class QuizActivity : AppCompatActivity() {
     private var curCorrectAns = ""
     private var imgURL = ""
     private var highScoreCount = 0L
+    private var animatedValue: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,13 +76,21 @@ class QuizActivity : AppCompatActivity() {
         initializeDatabse()
         buttonClickListener()
         getHighScoreFromDatabase()
-        shakeAnimation = AnimationUtils.loadAnimation(this, R.anim.shake)
-        countDownTimer = object : CountDownTimer(10000L, COUNTDOWN_INTERVAL) {
+        shakeAnimationWrong = AnimationUtils.loadAnimation(this, R.anim.shake)
+        shakeAnimationRight = AnimationUtils.loadAnimation(this, R.anim.shake_right)
+
+        countDownTimer = object : CountDownTimer(10500L, COUNTDOWN_INTERVAL) {
             override fun onTick(millisUntilFinished: Long) {
                 // Update countdown UI if needed
-                val secondsRemaining = (millisUntilFinished + 1000) / 1000 // Add 1000 milliseconds and then divide
-
+                val secondsRemaining = (millisUntilFinished) / 1000 // Add 1000 milliseconds and then divide
                 timerTextView!!.text=secondsRemaining.toString()
+
+                // Calculate the progress based on the remaining time
+                val progress = ((millisUntilFinished / 1000L) * 100 / 10L).toInt()
+
+                // Apply the AccelerateDecelerateInterpol
+                progressBar!!.progress = progress
+
 
             }
 
@@ -87,14 +98,23 @@ class QuizActivity : AppCompatActivity() {
                 // Move to the next question when timer finishes
                 currentQuestionIndex++
                 timerTextView!!.text="0"
+                progressBar!!.setProgress(0);
                 updateUI()
             }
         }
 
     }
 
+    private fun startProgressBar(){
+
+    }
+
     private fun initializeViews() {
         // Initialize the views using findViewById
+        buttonHome = findViewById(R.id.buttonHome)
+        buttonHomeMain = findViewById(R.id.buttonHomeMain)
+        buttonHomeMain!!.visibility=View.GONE
+        progressBar = findViewById(R.id.progressBar)
         tvCurQuesNo = findViewById(R.id.txtQnum)
         scoreCountText = findViewById(R.id.scoreCountText)
         totalQuestionTextView = findViewById(R.id.totalQuestion)
@@ -161,7 +181,7 @@ class QuizActivity : AppCompatActivity() {
 //        val customQuestionsList = questionViewModel.getCustomQuestionList()
 //        var customAnsList = questionViewModel.getCustomAnswerList()
 
-        startCountdownTimer()
+
         // You can now use customQuestionsList and customAnsList to update your UI
         if (customQuestionsList.isNotEmpty() && currentQuestionIndex < customQuestionsList.size) {
             val item=customQuestionsList[currentQuestionIndex]
@@ -216,12 +236,25 @@ class QuizActivity : AppCompatActivity() {
                 questionImageView!!.setImageResource(R.drawable.quiz_logo)
             }
 
+            startCountdownTimer()
+            //startProgressBar()
+
         }
         else {
             // Handle case when all questions have been displayed
             questionTextView!!.text = "No more questions"
+            afterFinished()
             countDownTimer?.cancel()
         }
+
+    }
+
+    private fun afterFinished(){
+        buttonHomeMain!!.visibility=View.VISIBLE
+        goneButtonVisibility()
+        scoreTextView!!.text=""
+        questionImageView!!.setImageResource(R.drawable.thank_you)
+        questionTextView!!.text = "Your Score: ${totalScoreCount}"
 
     }
 
@@ -239,9 +272,13 @@ class QuizActivity : AppCompatActivity() {
 
         countDownTimer?.cancel()
 
-        object : CountDownTimer(2000, 1000) {
+        object : CountDownTimer(2500, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 timerTextView!!.text= (millisUntilFinished/ 1000).toString()
+                val progress = ((millisUntilFinished / 1000L) * 100 / 10L).toInt()
+
+                // Apply the AccelerateDecelerateInterpol
+                progressBar!!.progress = progress
             }
             override fun onFinish() {
                 countDownTimer?.onFinish()
@@ -254,6 +291,12 @@ class QuizActivity : AppCompatActivity() {
         buttonB!!.visibility=View.VISIBLE
         buttonC!!.visibility=View.VISIBLE
         buttonD!!.visibility=View.VISIBLE
+    }
+    private fun goneButtonVisibility(){
+        buttonA!!.visibility=View.INVISIBLE
+        buttonB!!.visibility=View.INVISIBLE
+        buttonC!!.visibility=View.INVISIBLE
+        buttonD!!.visibility=View.INVISIBLE
     }
     private fun resetButtonColor(){
         buttonA!!.setStrokeColorResource(R.color.white)
@@ -291,7 +334,7 @@ class QuizActivity : AppCompatActivity() {
             buttonB!!.setStrokeColorResource(R.color.lightRed)
         }else if(buttonClicked=="C" && ans!="C"){
             buttonC!!.setStrokeColorResource(R.color.lightRed)
-        }else if(buttonClicked=="D" && ans!="C"){
+        }else if(buttonClicked=="D" && ans!="D"){
             buttonD!!.setStrokeColorResource(R.color.lightRed)
         }
     }
@@ -305,19 +348,18 @@ class QuizActivity : AppCompatActivity() {
                    // Toast.makeText(this, "CorrectAns: ${curCorrectAns}", Toast.LENGTH_SHORT).show()
 
                     if(curCorrectAns=="A"){
-
+                        buttonA!!.startAnimation(shakeAnimationRight)
                         totalScoreCount+=scoreCount
                         scoreCountText!!.text=totalScoreCount.toString()
                         correctScoreCount+=1
                         correctTextView!!.text=correctScoreCount.toString()
                     }else{
+                        buttonA!!.startAnimation(shakeAnimationWrong)
                         wrongScoreCount+=1
                         wrongTextView!!.text=wrongScoreCount.toString()
                         Log.d("ScoobyDooby", "No: Wrong")
                     }
 
-
-                    buttonA!!.startAnimation(shakeAnimation)
                     changeStrokeColor(curCorrectAns,"A")
                     buttonClickedFalse()
                     delay2sec()
@@ -325,57 +367,65 @@ class QuizActivity : AppCompatActivity() {
                 R.id.buttonB -> {
 
                     if(curCorrectAns=="B"){
+                        buttonB!!.startAnimation(shakeAnimationRight)
                         totalScoreCount+=scoreCount
                         scoreCountText!!.text=totalScoreCount.toString()
                         correctScoreCount+=1
                         correctTextView!!.text=correctScoreCount.toString()
                     }else{
+                        buttonB!!.startAnimation(shakeAnimationWrong)
                         wrongScoreCount+=1
                         wrongTextView!!.text=wrongScoreCount.toString()
                         Log.d("ScoobyDooby", "No: Wrong")
                     }
 
                     changeStrokeColor(curCorrectAns,"B")
-                    buttonB!!.startAnimation(shakeAnimation)
                     buttonClickedFalse()
                     delay2sec()
                 }
                 R.id.buttonC -> {
 
-
                     if(curCorrectAns=="C"){
+                        buttonC!!.startAnimation(shakeAnimationRight)
                         totalScoreCount+=scoreCount
                         scoreCountText!!.text=totalScoreCount.toString()
                         correctScoreCount+=1
                         correctTextView!!.text=correctScoreCount.toString()
                     }else{
+                        buttonC!!.startAnimation(shakeAnimationWrong)
                         wrongScoreCount+=1
                         wrongTextView!!.text=wrongScoreCount.toString()
                         Log.d("ScoobyDooby", "No: Wrong")
                     }
                     changeStrokeColor(curCorrectAns,"C")
-                    buttonC!!.startAnimation(shakeAnimation)
                     buttonClickedFalse()
                     delay2sec()
                 }
                 R.id.buttonD -> {
 
                     if(curCorrectAns=="D"){
+                        buttonD!!.startAnimation(shakeAnimationRight)
                         totalScoreCount+=scoreCount
                         scoreCountText!!.text=totalScoreCount.toString()
                         correctScoreCount+=1
                         correctTextView!!.text=correctScoreCount.toString()
                     }else{
+                        buttonD!!.startAnimation(shakeAnimationWrong)
                         wrongScoreCount+=1
                         wrongTextView!!.text=wrongScoreCount.toString()
                         Log.d("ScoobyDooby", "No: Wrong")
                     }
                     changeStrokeColor(curCorrectAns,"D")
-                    buttonD!!.startAnimation(shakeAnimation)
                     buttonClickedFalse()
                     delay2sec()
                 }
+                R.id.buttonHome -> {
+                    // Code to start a new game goes here
+                    finish()
+                    val intent = Intent(this, MainActivity::class.java)
 
+                    startActivity(intent)
+                }
             }
         }
 
@@ -383,6 +433,7 @@ class QuizActivity : AppCompatActivity() {
         buttonB!!.setOnClickListener(buttonClickListener)
         buttonC!!.setOnClickListener(buttonClickListener)
         buttonD!!.setOnClickListener(buttonClickListener)
+        buttonHome!!.setOnClickListener(buttonClickListener)
     }
 
 }

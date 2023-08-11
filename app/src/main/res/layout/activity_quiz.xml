@@ -12,7 +12,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
 
         <TextView
             android:id="@+id/imageView3"
@@ -28,8 +29,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.025"
-            app:srcCompat="@drawable/coin" />
+            app:layout_constraintVertical_bias="0.025"/>
 
         <TextView
             android:id="@+id/txtQnum"
@@ -171,7 +171,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
-            android:gravity="bottom"
             android:text="29"
             android:textAlignment="center"
             android:textColor="@color/white"
@@ -182,6 +181,19 @@
             app:layout_constraintHorizontal_bias="0.547"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="45dp"
+            app:layout_constraintBottom_toTopOf="@+id/cardCons"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtTimer" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -255,6 +267,32 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <RelativeLayout
+            android:id="@+id/buttonHomeMain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:gravity="center_horizontal"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/cardCons"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"> <!-- Add gravity to center horizontally -->
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonHome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="Back to Home"
+                android:textAllCaps="false"
+                android:textColor="@color/nearBlue"
+                app:backgroundTint="#FFFFFF"
+                android:textSize="25sp"
+                app:cornerRadius="12dp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
         <LinearLayout
@@ -279,7 +317,8 @@
                 app:strokeColor="@color/white"
                 app:strokeWidth="4dp"
                 android:textAllCaps="false"
-                android:textColor="@color/white"
+                android:textColor="@color/nearBlue"
+                app:backgroundTint="#FFFFFF"
                 android:textSize="25sp"
                 app:cornerRadius="15dp"
                 android:textStyle="bold" />
@@ -290,13 +329,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:text="Operating System"
-                app:strokeColor="@color/white"
-                app:strokeWidth="3dp"
                 android:textAllCaps="false"
-                android:textColor="@color/white"
                 android:textSize="25sp"
+                android:textStyle="bold"
+                android:textColor="@color/nearBlue"
+                app:backgroundTint="#FFFFFF"
                 app:cornerRadius="15dp"
-                android:textStyle="bold" />
+                app:strokeColor="@color/white"
+                app:strokeWidth="3dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonC"
@@ -307,10 +347,13 @@
                 android:layout_marginTop="15dp"
                 android:text="Smart Phone"
                 android:textAllCaps="false"
-                android:textColor="@color/white"
+                android:textColor="@color/nearBlue"
+                app:backgroundTint="#FFFFFF"
                 android:textSize="25sp"
                 app:cornerRadius="15dp"
                 android:textStyle="bold" />
+
+
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonD"
@@ -321,7 +364,8 @@
                 app:strokeWidth="3dp"
                 android:text="Quizi Quizi"
                 android:textAllCaps="false"
-                android:textColor="@color/white"
+                android:textColor="@color/nearBlue"
+                app:backgroundTint="#FFFFFF"
                 android:textSize="25sp"
                 app:cornerRadius="15dp"
                 android:textStyle="bold" />
