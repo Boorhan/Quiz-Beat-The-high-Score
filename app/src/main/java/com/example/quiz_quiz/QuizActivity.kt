@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.quiz_quiz.model.Answers
 import com.example.quiz_quiz.model.HighScore
 import com.example.quiz_quiz.model.Question
+import com.example.quiz_quiz.util.NetworkUtil
 import com.example.quiz_quiz.viewmodel.QuestionViewModelFactory
 import com.example.quiz_quiz.viewmodel.QuestionsViewModel
 import com.google.android.material.button.MaterialButton
@@ -31,6 +32,7 @@ class QuizActivity : AppCompatActivity() {
 
     // Declare variables for all the views you want to identify
     private var coinImageView: TextView? = null
+    private var linearLayoutButton: LinearLayout? = null
     private var tvCurQuesNo: TextView? = null
     private var scoreCountText: TextView? = null
     private var totalQuestionTextView: TextView? = null
@@ -111,6 +113,7 @@ class QuizActivity : AppCompatActivity() {
 
     private fun initializeViews() {
         // Initialize the views using findViewById
+        linearLayoutButton = findViewById(R.id.linearLayoutButton)
         buttonHome = findViewById(R.id.buttonHome)
         buttonHomeMain = findViewById(R.id.buttonHomeMain)
         buttonHomeMain!!.visibility=View.GONE
@@ -188,7 +191,7 @@ class QuizActivity : AppCompatActivity() {
             //from variables
             tvCurQuesNo!!.text = (currentQuestionIndex+1).toString()
             scoreCountText!!.text =totalScoreCount.toString()
-            if(totalScoreCount>=highScoreCount){
+            if(totalScoreCount>highScoreCount){
                 CoroutineScope(Dispatchers.Main).launch {
                     highScoreCount= totalScoreCount.toLong()
                     val highScore = HighScore(score = highScoreCount)
@@ -242,16 +245,36 @@ class QuizActivity : AppCompatActivity() {
         }
         else {
             // Handle case when all questions have been displayed
-            questionTextView!!.text = "No more questions"
-            afterFinished()
-            countDownTimer?.cancel()
+                if(currentQuestionIndex>0)
+                {
+                    afterFinished()
+                }else if(!NetworkUtil.isInternetAvailable(this)){
+                    noInternet()
+                }
         }
 
     }
-
-    private fun afterFinished(){
+    private fun noInternet(){
         buttonHomeMain!!.visibility=View.VISIBLE
         goneButtonVisibility()
+        countDownTimer?.cancel()
+        scoreTextView!!.text=""
+        questionImageView!!.setImageResource(R.drawable.no_internet)
+        questionTextView!!.text = "Initial Occurrence Require Internet Access!!"
+    }
+
+    private fun afterFinished(){
+        goneButtonVisibility()
+        buttonHomeMain!!.visibility=View.VISIBLE
+
+        if(totalScoreCount>highScoreCount){
+            CoroutineScope(Dispatchers.Main).launch {
+                highScoreCount= totalScoreCount.toLong()
+                val highScore = HighScore(score = highScoreCount)
+                questionViewModel.insertHighScore(highScore)// This function should also be suspend
+            }
+        }
+        countDownTimer?.cancel()
         scoreTextView!!.text=""
         questionImageView!!.setImageResource(R.drawable.thank_you)
         questionTextView!!.text = "Your Score: ${totalScoreCount}"
@@ -287,12 +310,14 @@ class QuizActivity : AppCompatActivity() {
     }
 
     private fun resetButtonVisibility(){
+        linearLayoutButton!!.visibility=View.VISIBLE
         buttonA!!.visibility=View.VISIBLE
         buttonB!!.visibility=View.VISIBLE
         buttonC!!.visibility=View.VISIBLE
         buttonD!!.visibility=View.VISIBLE
     }
     private fun goneButtonVisibility(){
+        linearLayoutButton!!.visibility=View.INVISIBLE
         buttonA!!.visibility=View.INVISIBLE
         buttonB!!.visibility=View.INVISIBLE
         buttonC!!.visibility=View.INVISIBLE

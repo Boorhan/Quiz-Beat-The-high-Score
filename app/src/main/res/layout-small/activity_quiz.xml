@@ -14,9 +14,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/dotted_border"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginTop="20dp">
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="5dp">
 
         <TextView
             android:id="@+id/imageView3"
@@ -38,7 +38,7 @@
             android:id="@+id/txtQnum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="12"
+            android:text="0"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -64,7 +64,7 @@
             android:id="@+id/totalQuestion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="100"
+            android:text="0"
             app:layout_constraintStart_toEndOf="@+id/slash"
             app:layout_constraintTop_toTopOf="@+id/slash"
             app:layout_constraintBottom_toBottomOf="@+id/slash"
@@ -81,7 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
-            android:text="100"
+            android:text="0"
             android:textColor="@color/white"
             android:textSize="22sp"
             android:textStyle="bold"
@@ -107,8 +107,8 @@
         android:id="@+id/correctLinear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:padding="10dp"
+        android:layout_marginTop="5dp"
+        android:padding="5dp"
         android:paddingStart="80dp"
         android:orientation="horizontal">
 
@@ -126,7 +126,7 @@
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="12" />
+            android:text="0" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -145,7 +145,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingStart="5dp"
-                android:text="8"
+                android:text="0"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -156,9 +156,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         android:padding="10dp"
         android:background="@drawable/dotted_border"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout">
@@ -179,7 +179,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
-            android:text="29"
+            android:text="0"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="25sp"
@@ -196,7 +196,7 @@
             android:layout_width="match_parent"
             android:layout_height="10dp"
             android:layout_marginStart="45dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:layout_marginEnd="45dp"
             app:layout_constraintBottom_toTopOf="@+id/cardCons"
             app:layout_constraintEnd_toEndOf="parent"
@@ -259,7 +259,7 @@
                     <!-- Bottom Text -->
                     <TextView
                         android:id="@+id/questionTextView"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="5dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Question"
@@ -303,84 +303,84 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-        <LinearLayout
-            android:id="@+id/linearLayoutButton"
+    <LinearLayout
+        android:id="@+id/linearLayoutButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:padding="5dp"
+        android:background="@drawable/dotted_border"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_bias="0.060000002">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonA"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:padding="16dp"
-            android:background="@drawable/dotted_border"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintVertical_bias="0.060000002">
+            android:layout_marginTop="5dp"
+            android:text="Option A"
+            app:strokeColor="@color/white"
+            app:strokeWidth="4dp"
+            android:textAllCaps="false"
+            android:textColor="@color/nearBlue"
+            app:backgroundTint="#FFFFFF"
+            android:textSize="25sp"
+            app:cornerRadius="15dp"
+            android:textStyle="bold" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/buttonA"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Design"
-                app:strokeColor="@color/white"
-                app:strokeWidth="4dp"
-                android:textAllCaps="false"
-                android:textColor="@color/nearBlue"
-                app:backgroundTint="#FFFFFF"
-                android:textSize="25sp"
-                app:cornerRadius="15dp"
-                android:textStyle="bold" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Option B"
+            android:textAllCaps="false"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:textColor="@color/nearBlue"
+            app:backgroundTint="#FFFFFF"
+            app:cornerRadius="15dp"
+            app:strokeColor="@color/white"
+            app:strokeWidth="3dp" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/buttonB"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:text="Operating System"
-                android:textAllCaps="false"
-                android:textSize="25sp"
-                android:textStyle="bold"
-                android:textColor="@color/nearBlue"
-                app:backgroundTint="#FFFFFF"
-                app:cornerRadius="15dp"
-                app:strokeColor="@color/white"
-                app:strokeWidth="3dp" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/buttonC"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:strokeColor="@color/white"
-                app:strokeWidth="3dp"
-                android:layout_marginTop="15dp"
-                android:text="Smart Phone"
-                android:textAllCaps="false"
-                android:textColor="@color/nearBlue"
-                app:backgroundTint="#FFFFFF"
-                android:textSize="25sp"
-                app:cornerRadius="15dp"
-                android:textStyle="bold" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonC"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:strokeColor="@color/white"
+            app:strokeWidth="3dp"
+            android:layout_marginTop="5dp"
+            android:text="Option C"
+            android:textAllCaps="false"
+            android:textColor="@color/nearBlue"
+            app:backgroundTint="#FFFFFF"
+            android:textSize="25sp"
+            app:cornerRadius="15dp"
+            android:textStyle="bold" />
 
 
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/buttonD"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                app:strokeColor="@color/white"
-                app:strokeWidth="3dp"
-                android:text="Quizi Quizi"
-                android:textAllCaps="false"
-                android:textColor="@color/nearBlue"
-                app:backgroundTint="#FFFFFF"
-                android:textSize="25sp"
-                app:cornerRadius="15dp"
-                android:textStyle="bold" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonD"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            app:strokeColor="@color/white"
+            app:strokeWidth="3dp"
+            android:text="Option D"
+            android:textAllCaps="false"
+            android:textColor="@color/nearBlue"
+            app:backgroundTint="#FFFFFF"
+            android:textSize="25sp"
+            app:cornerRadius="15dp"
+            android:textStyle="bold" />
 
-        </LinearLayout>
+    </LinearLayout>
 
 
 </LinearLayout>
