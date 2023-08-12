@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.quiz_quiz.api.APIinterface
 import com.example.quiz_quiz.api.APiUtilities
 import com.example.quiz_quiz.model.Answers
+import com.example.quiz_quiz.model.Question
 import com.example.quiz_quiz.model.QuestionsAndAnswers
 import com.example.quiz_quiz.repository.QuestionsRepository
 import com.example.quiz_quiz.room.QuestionDatabase
@@ -25,6 +26,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var highScoreTextView: TextView
     private lateinit var questionViewModel: QuestionsViewModel
     lateinit var questionsRepository: QuestionsRepository
+    private lateinit var customQuestionsList: List<Question>
 
     private var highScore: Long = 0
 
@@ -34,23 +36,58 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        var repository= (application as MyApplication).questionsRepository
+//        var repository= (application as MyApplication).questionsRepository
+//
+//        questionViewModel= ViewModelProvider(this, QuestionViewModelFactory(repository)).get(QuestionsViewModel::class.java)
+//
+//        questionViewModel.question.observe(this, {
+//            Log.d("Borhan", "onCreate: ${it.toString()}")
+//            //Toast.makeText(this, "Size: ${it.questions.size}", Toast.LENGTH_LONG).show()
+//
+//            it.questions.iterator().forEach {q->
+//                Log.d("Borhan", "Question: ${q.answers}\n Score: ${q.score}")
+//            }
+//
+//        })
 
-        questionViewModel= ViewModelProvider(this, QuestionViewModelFactory(repository)).get(QuestionsViewModel::class.java)
-
-        questionViewModel.question.observe(this, {
-            Log.d("Borhan", "onCreate: ${it.toString()}")
-            //Toast.makeText(this, "Size: ${it.questions.size}", Toast.LENGTH_LONG).show()
-
-            it.questions.iterator().forEach {q->
-                Log.d("Borhan", "Question: ${q.answers}\n Score: ${q.score}")
-            }
-
-        })
-
+        initializeDatabse()
         highScoreTextView = findViewById(R.id.highScoreTextView)
         updateHighScore()
         getHighScoreFromDatabase()
+    }
+
+    private fun initializeDatabse(){
+        var repository= (application as MyApplication).questionsRepository
+
+        questionViewModel= ViewModelProvider(this, QuestionViewModelFactory(repository)).get(
+            QuestionsViewModel::class.java)
+
+        questionViewModel.question.observe(this, {
+            //Log.d("Borhan", "onCreate: ${it.toString()}")
+            //Toast.makeText(this, "Size: ${it.questions.size}", Toast.LENGTH_LONG).show()
+
+
+            val quesList =it.questions
+            Log.d("ScoobyDooby", "onCreate: ${it.questions}")
+            questionViewModel.populateQuestionList(quesList)
+
+
+            val answersList = mutableListOf<Answers>()
+
+            // Iterate through questions and add answers to the list
+            for (question in it.questions) {
+                answersList.add(question.answers)
+            }
+            Log.d("ScoobyDooby", "Ans: ${answersList}")
+            questionViewModel.populateAnswerList(answersList)
+
+
+            //updateUI()
+            customQuestionsList = questionViewModel.getCustomQuestionList()
+            //updateUI()
+
+        })
+
     }
 
     private fun getHighScoreFromDatabase(){

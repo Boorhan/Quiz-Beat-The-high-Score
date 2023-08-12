@@ -1,6 +1,7 @@
 package com.example.quiz_quiz
 
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
@@ -29,6 +30,11 @@ class QuizActivity : AppCompatActivity() {
     private lateinit var questionViewModel: QuestionsViewModel
 
     private lateinit var customQuestionsList: List<Question>
+
+    private lateinit var correctAnsMediaPlayer: MediaPlayer
+    private lateinit var wrongAnsMediaPlayer: MediaPlayer
+    private lateinit var highScoreBeatMediaPlayer: MediaPlayer
+    private lateinit var notBeatenMediaPlayer: MediaPlayer
 
     // Declare variables for all the views you want to identify
     private var coinImageView: TextView? = null
@@ -81,6 +87,10 @@ class QuizActivity : AppCompatActivity() {
         shakeAnimationWrong = AnimationUtils.loadAnimation(this, R.anim.shake)
         shakeAnimationRight = AnimationUtils.loadAnimation(this, R.anim.shake_right)
 
+        correctAnsMediaPlayer = MediaPlayer.create(this, R.raw.right_ans)
+        wrongAnsMediaPlayer = MediaPlayer.create(this, R.raw.wrong_ans)
+        highScoreBeatMediaPlayer = MediaPlayer.create(this, R.raw.yeayy)
+
         countDownTimer = object : CountDownTimer(10500L, COUNTDOWN_INTERVAL) {
             override fun onTick(millisUntilFinished: Long) {
                 // Update countdown UI if needed
@@ -107,9 +117,19 @@ class QuizActivity : AppCompatActivity() {
 
     }
 
-    private fun startProgressBar(){
+    override fun onDestroy() {
+        super.onDestroy()
+
+        wrongAnsMediaPlayer!!.stop()
+        wrongAnsMediaPlayer!!.release()
+        correctAnsMediaPlayer!!.stop()
+        correctAnsMediaPlayer!!.release()
+        highScoreBeatMediaPlayer!!.stop()
+        highScoreBeatMediaPlayer!!.release()
+
 
     }
+
 
     private fun initializeViews() {
         // Initialize the views using findViewById
@@ -178,6 +198,10 @@ class QuizActivity : AppCompatActivity() {
 
         })
 
+    }
+    private fun stopSound(){
+//        wrongAnsMediaPlayer!!.stop()
+//        correctAnsMediaPlayer!!.stop()
     }
 
     private fun updateUI(){
@@ -266,7 +290,7 @@ class QuizActivity : AppCompatActivity() {
     private fun afterFinished(){
         goneButtonVisibility()
         buttonHomeMain!!.visibility=View.VISIBLE
-
+        countDownTimer?.cancel()
         if(totalScoreCount>highScoreCount){
             CoroutineScope(Dispatchers.Main).launch {
                 highScoreCount= totalScoreCount.toLong()
@@ -274,9 +298,18 @@ class QuizActivity : AppCompatActivity() {
                 questionViewModel.insertHighScore(highScore)// This function should also be suspend
             }
         }
-        countDownTimer?.cancel()
-        scoreTextView!!.text=""
-        questionImageView!!.setImageResource(R.drawable.thank_you)
+        if(totalScoreCount.toLong()==highScoreCount){
+            highScoreBeatMediaPlayer.start()
+            scoreTextView!!.text="High Score Beaten"
+            questionImageView!!.setImageResource(R.drawable.hurrah)
+
+        }
+        else{
+            scoreTextView!!.text=""
+            questionImageView!!.setImageResource(R.drawable.thank_you)
+        }
+
+
         questionTextView!!.text = "Your Score: ${totalScoreCount}"
 
     }
@@ -374,11 +407,13 @@ class QuizActivity : AppCompatActivity() {
 
                     if(curCorrectAns=="A"){
                         buttonA!!.startAnimation(shakeAnimationRight)
+                        correctAnsMediaPlayer.start()
                         totalScoreCount+=scoreCount
                         scoreCountText!!.text=totalScoreCount.toString()
                         correctScoreCount+=1
                         correctTextView!!.text=correctScoreCount.toString()
                     }else{
+                        wrongAnsMediaPlayer.start()
                         buttonA!!.startAnimation(shakeAnimationWrong)
                         wrongScoreCount+=1
                         wrongTextView!!.text=wrongScoreCount.toString()
@@ -392,12 +427,14 @@ class QuizActivity : AppCompatActivity() {
                 R.id.buttonB -> {
 
                     if(curCorrectAns=="B"){
+                        correctAnsMediaPlayer.start()
                         buttonB!!.startAnimation(shakeAnimationRight)
                         totalScoreCount+=scoreCount
                         scoreCountText!!.text=totalScoreCount.toString()
                         correctScoreCount+=1
                         correctTextView!!.text=correctScoreCount.toString()
                     }else{
+                        wrongAnsMediaPlayer.start()
                         buttonB!!.startAnimation(shakeAnimationWrong)
                         wrongScoreCount+=1
                         wrongTextView!!.text=wrongScoreCount.toString()
@@ -411,12 +448,14 @@ class QuizActivity : AppCompatActivity() {
                 R.id.buttonC -> {
 
                     if(curCorrectAns=="C"){
+                        correctAnsMediaPlayer.start()
                         buttonC!!.startAnimation(shakeAnimationRight)
                         totalScoreCount+=scoreCount
                         scoreCountText!!.text=totalScoreCount.toString()
                         correctScoreCount+=1
                         correctTextView!!.text=correctScoreCount.toString()
                     }else{
+                        wrongAnsMediaPlayer.start()
                         buttonC!!.startAnimation(shakeAnimationWrong)
                         wrongScoreCount+=1
                         wrongTextView!!.text=wrongScoreCount.toString()
@@ -429,12 +468,14 @@ class QuizActivity : AppCompatActivity() {
                 R.id.buttonD -> {
 
                     if(curCorrectAns=="D"){
+                        correctAnsMediaPlayer.start()
                         buttonD!!.startAnimation(shakeAnimationRight)
                         totalScoreCount+=scoreCount
                         scoreCountText!!.text=totalScoreCount.toString()
                         correctScoreCount+=1
                         correctTextView!!.text=correctScoreCount.toString()
                     }else{
+                        wrongAnsMediaPlayer.start()
                         buttonD!!.startAnimation(shakeAnimationWrong)
                         wrongScoreCount+=1
                         wrongTextView!!.text=wrongScoreCount.toString()
