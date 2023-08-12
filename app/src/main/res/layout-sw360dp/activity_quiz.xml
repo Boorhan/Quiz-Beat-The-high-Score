@@ -267,7 +267,7 @@
                         android:layout_height="wrap_content"
                         android:text="Question"
                         android:textColor="@color/nearBlue"
-                        android:textSize="18sp"
+                        android:textSize="12sp"
                         android:textStyle="bold"
                         app:layout_constraintTop_toBottomOf="@+id/imageView"
                         app:layout_constraintStart_toStartOf="parent"

@@ -255,7 +255,7 @@ class QuizActivity : AppCompatActivity() {
 
             curCorrectAns=item.correctAnswer.toString()
             imgURL=item.questionImageUrl.toString()
-            if(imgURL!="null"){
+            if(imgURL!="null" && NetworkUtil.isInternetAvailable(this)){
                 //Log.d("ScoobyDooby", "borhan is here")
                 Picasso.get().load(imgURL).into(questionImageView);
             }else{
@@ -284,7 +284,7 @@ class QuizActivity : AppCompatActivity() {
         countDownTimer?.cancel()
         scoreTextView!!.text=""
         questionImageView!!.setImageResource(R.drawable.no_internet)
-        questionTextView!!.text = "Initial Occurrence Require Internet Access!!"
+        questionTextView!!.text = "First time Require Internet Access!!"
     }
 
     private fun afterFinished(){
