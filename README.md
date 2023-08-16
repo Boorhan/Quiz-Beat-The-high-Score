@@ -52,11 +52,7 @@ Happy quizzing!
 
 ## Screenshots
 
-<div style="display: flex; justify-content: center;">
-  <div style="flex: 50%; padding: 10px;">
-    <img src="screenshots/main_page.jpg" alt="Main Menu" width="80"/>
-  </div>
-  <div style="flex: 50%; padding: 10px;">
-    <img src="screenshots/question_page.jpg" alt="Question Page" width="80"/>
-  </div>
-</div>
+| Main Menu | Question Page |
+| :--------: | :-------------: |
+| ![Main Menu](screenshots/main_page.jpg) | ![Question Page](screenshots/question_page.jpg) |
+
