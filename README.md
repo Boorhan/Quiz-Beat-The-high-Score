@@ -42,7 +42,7 @@ Feel free to explore the codebase and contribute to the development of this enga
 
 ---
 
-For installation: [Drive][https://drive.google.com/file/d/12a0L-ROW5xPhalgGDEZrAr_rAFLfU1Uk/view?usp=drive_link).
+For installation: [Drive](https://drive.google.com/file/d/12a0L-ROW5xPhalgGDEZrAr_rAFLfU1Uk/view?usp=drive_link).
 
 If you encounter any issues or have suggestions for improvement, please [open an issue](link-to-issue-tracker) or submit a pull request.
 
@@ -54,9 +54,9 @@ Happy quizzing!
 
 <div style="display: flex; justify-content: center;">
   <div style="flex: 50%; padding: 10px;">
-    <imgimg src="screenshots/main_page.jpg" alt="Main Menu" width="200"/>
+    <imgimg src="screenshots/main_page.jpg" alt="Main Menu" width="20"/>
   </div>
   <div style="flex: 50%; padding: 10px;">
-    <img src="screenshots/question_page.jpg" alt="Question Page" width="100%"/>
+    <img src="screenshots/question_page.jpg" alt="Question Page" width="20"/>
   </div>
 </div>
